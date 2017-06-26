@@ -1,0 +1,12 @@
+Package: gradientPickerD3
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Description: Matt Crinklaw-Vogt (nick: tantaman)https://github.com/tantaman/
+    jquery-gradient-picker
+Depends:
+    R (>= 3.3.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1

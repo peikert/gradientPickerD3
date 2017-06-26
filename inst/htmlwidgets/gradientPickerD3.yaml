@@ -1,0 +1,37 @@
+dependencies:
+- name: jquery
+  version: 1.7.0
+  src: htmlwidgets/lib/jquery
+  script: jquery.js
+- name: jquery-ui
+  version: 1.12.1
+  src: htmlwidgets/lib/jquery-ui
+  script: jquery-ui.js
+  stylesheet: 
+  - jquery-ui.css  
+  - jquery-ui.structure.css  
+  - jquery-ui.theme.css  
+- name: eye
+  version: 0.0.0
+  src: htmlwidgets/lib/eye
+  script: eye.js
+- name: layout
+  version: 0.0.0
+  src: htmlwidgets/lib/layout
+  script: layout.js
+  stylesheet: layout.css  
+- name: utils
+  version: 0.0.0
+  src: htmlwidgets/lib/utils
+  script: utils.js
+- name: colorpicker
+  version: 0.0.0
+  src: htmlwidgets/lib/colorpicker
+  script: colorpicker.js
+  stylesheet: colorpicker.css
+- name: gradientPickerD3
+  version: 0.0.1
+  src: htmlwidgets/lib/gradientPickerD3
+  script: jquery.gradientPicker.js
+  stylesheet: jquery.gradientPicker.css
+
