@@ -1,28 +1,24 @@
 dependencies:
 - name: jquery
-  version: 1.7.0
+  version: 1.10.2
   src: htmlwidgets/lib/jquery
   script: jquery.js
 - name: jquery-ui
   version: 1.12.1
-  src: htmlwidgets/lib/jquery-ui
-  script: jquery-ui.js
-  stylesheet: 
-  - jquery-ui.css  
-  - jquery-ui.structure.css  
-  - jquery-ui.theme.css  
+  src: htmlwidgets/lib/jqueryUI-custom
+  script: jqueryUI-custom.js
 - name: eye
   version: 0.0.0
-  src: htmlwidgets/lib/eye
+  src: htmlwidgets/lib/colorpicker
   script: eye.js
 - name: layout
   version: 0.0.0
-  src: htmlwidgets/lib/layout
+  src: htmlwidgets/lib/colorpicker
   script: layout.js
   stylesheet: layout.css  
 - name: utils
   version: 0.0.0
-  src: htmlwidgets/lib/utils
+  src: htmlwidgets/lib/colorpicker
   script: utils.js
 - name: colorpicker
   version: 0.0.0

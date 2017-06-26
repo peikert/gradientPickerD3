@@ -6,7 +6,22 @@
 	background: url(colorpicker_background.png);
 	font-family: Arial, Helvetica, sans-serif;
 	display: none;
+	z-index:500;
 }
+
+.color-chooser {
+	width: 30px;
+	height: 30px;
+	margin-top: 5px;
+	background: url("select.png") center;
+}
+
+.color-chooser > div {
+	width: 30px;
+	height: 30px;
+	background: url("select.png") center;
+}
+
 .colorpicker_color {
 	width: 150px;
 	height: 150px;
@@ -99,6 +114,15 @@
 	background-position: top;
 	position: absolute;
 }
+
+.colorpicker_field > input {
+	width: 42px;
+}
+
+.colorpicker_hex > input {
+	width: 42px;
+}
+
 .colorpicker_field span {
 	position: absolute;
 	width: 12px;
