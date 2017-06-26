@@ -47,89 +47,12 @@
 		var canvas = $preview[0];
 		canvas.width = canvas.clientWidth;
 		canvas.height = canvas.clientHeight;
-		//console.log('canvas.width: '+canvas.width)
-		//console.log('canvas.height: '+canvas.height)
 		this.g2d = canvas.getContext("2d");
 
 		var $ctrlPtContainer = $("<div class='gradientPicker-ctrlPts'></div>");
 		this.$el.append($ctrlPtContainer)
 		this.$ctrlPtContainer = $ctrlPtContainer;
-		
-		
-		// <add scale bar>
-		
 
-				 var $ctrlPtContainer_scalebar_line = $("<div id='scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
-		this.$el.append($ctrlPtContainer_scalebar_line);
-		var toAdd = document.createDocumentFragment();
-		width_step = canvas.width/4;
-		for (i = 0; i <5; i++) { 
-		
-		var newDiv = document.createElement('div');
-		newDiv.id = 'sline'+i;
-		if(i==0){
-			newDiv.style.left = 0+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_left';
-			}
-		else if(i<4){
-			newDiv.style.left = ((width_step*i)-1)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_middle';
-			}
-		else{
-			newDiv.style.left = (canvas.width-2)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_right';
-			}
-		toAdd.append(newDiv);
-		}
-		$('#scalebar_line').append(toAdd);
-		
-		
-		var $ctrlPtContainer_scalebar_label = $("<div id='scalebar_label'; class='gradientPicker-ctrlPts_scalebar_label'></div>");
-		this.$el.append($ctrlPtContainer_scalebar_label);
-		var toAdd = document.createDocumentFragment();
-		width_step = canvas.width/4;
-		for (i = 0; i <5; i++) { 
-		
-		var newDiv = document.createElement('div');
-		newDiv.id = 'sline'+i;
-		
-		var newContent = document.createTextNode(((i*25)+"%")); 
-		newDiv.append(newContent);
-		if(i>1){console.log($('#slabel'+(i-1)))};
-		
-		if(i==0){
-			newDiv.style.left = 0+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_left';
-			}
-		else if(i<4){
-			newDiv.style.left = ((width_step*i)-25)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_middle';
-			}
-		else{
-			newDiv.style.left = (canvas.width-50)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_right';
-			}
-		toAdd.append(newDiv);
-		}
-		$('#scalebar_label').append(toAdd);
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		//</>
-		
 		this.updatePreview = bind(this.updatePreview, this);
 		this.controlPoints = [];
 		this.ctrlPtConfig = new ControlPtConfig(this.$el, opts);
@@ -156,7 +79,7 @@
 		createCtrlPt: function(ctrlPtSetup) {
 			return new ControlPoint(this.$ctrlPtContainer, ctrlPtSetup, this.opts.orientation, this, this.ctrlPtConfig)
 		},
-		
+
 		destroyed: function() {
 			$(document).unbind("click", this.docClicked);
 		},
@@ -252,6 +175,7 @@
 			this.position = initialState.position;
 			this.color = initialState.color;
 		}
+
 		this.listener = listener;
 		this.outerWidth = this.$el.outerWidth();
 

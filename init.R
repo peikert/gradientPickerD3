@@ -9,3 +9,6 @@ devtools::document()
 devtools::install()   
 library('gradientPickerD3')
 gradientPickerD3("hello, world")
+
+
+
