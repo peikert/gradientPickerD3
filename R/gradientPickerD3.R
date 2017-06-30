@@ -5,12 +5,13 @@
 #' @import htmlwidgets
 #'
 #' @export
-gradientPickerD3 <- function(message, width = NULL, height = NULL, elementId = NULL) {
+gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = NULL) {
 
   # forward options using x
-  x = list(
-    message = message
-  )
+  library("jsonlite")
+  
+#  payload <- list(colors=c("purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"),test='test')
+  x <- toJSON(payload)
 
   # create widget
   htmlwidgets::createWidget(

@@ -59,7 +59,7 @@
 		// <add scale bar>
 		
 
-				 var $ctrlPtContainer_scalebar_line = $("<div id='scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
+		var $ctrlPtContainer_scalebar_line = $("<div id='scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
 		this.$el.append($ctrlPtContainer_scalebar_line);
 		var toAdd = document.createDocumentFragment();
 		width_step = canvas.width/4;
@@ -79,9 +79,9 @@
 			newDiv.style.left = (canvas.width-2)+'px';
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_right';
 			}
-		toAdd.append(newDiv);
+		toAdd.appendChild(newDiv);
 		}
-		$('#scalebar_line').append(toAdd);
+		document.getElementById('scalebar_line').appendChild(toAdd);
 		
 		
 		var $ctrlPtContainer_scalebar_label = $("<div id='scalebar_label'; class='gradientPicker-ctrlPts_scalebar_label'></div>");
@@ -94,8 +94,8 @@
 		newDiv.id = 'sline'+i;
 		
 		var newContent = document.createTextNode(((i*25)+"%")); 
-		newDiv.append(newContent);
-		if(i>1){console.log($('#slabel'+(i-1)))};
+		newDiv.appendChild(newContent);
+	//	if(i>1){console.log($('#slabel'+(i-1)))};
 		
 		if(i==0){
 			newDiv.style.left = 0+'px';
@@ -109,9 +109,9 @@
 			newDiv.style.left = (canvas.width-50)+'px';
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_right';
 			}
-		toAdd.append(newDiv);
+		toAdd.appendChild(newDiv);
 		}
-		$('#scalebar_label').append(toAdd);
+		document.getElementById('scalebar_label').appendChild(toAdd);
 		
 		
 		

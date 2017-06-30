@@ -4,7 +4,7 @@
 \alias{gradientPickerD3}
 \title{<Add Title>}
 \usage{
-gradientPickerD3(message, width = NULL, height = NULL, elementId = NULL)
+gradientPickerD3(payload, width = NULL, height = NULL, elementId = NULL)
 }
 \description{
 <Add Description>

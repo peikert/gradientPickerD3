@@ -4,22 +4,41 @@ HTMLWidgets.widget({
 
   type: 'output',
 
-  factory: function(el, width, height) {
+     initialize: function (el, width, height) {
+        console.log("-- Entered initialize() --");
+     },
 
-    return {
-
-      renderValue: function(x) {
-
-
-      $( el ).append( "<p id='p1'>Test1</p>" );
+renderValue: function (el, x, instance) {
+        console.log("-- Entered renderValue() --");
+    //  console.log(x)
+    //  console.log(x.colors)
+      
+    //var colors =  ["purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"]
+     var colors =  x.colors
+   // console.log(colors);
+      
+ //     $( el ).append( "<p id='p1'>Test1</p>" );
+    
 			$(el).gradientPicker({
 				change: function(points, styles) { // styles include standard style and browser-prefixed style
-					for (i = 0; i < styles.length; ++i) {
-					  $('#p1').css("background-image", styles[i]);
-					}
+				  
+				  if (HTMLWidgets.shinyMode) {
+          console.log(el.id)
+				  Shiny.onInputChange(
+                el.id + "_selected",
+                styles
+              );
+				  }
+//					for (i = 0; i < styles.length; ++i) {
+//					  $('#p1').css("background-image", styles[i]);
+//					}
+		//$('#p1').css("background-image", styles[1]);
 				},
-			//	controlPoints: ["purple 0%","blue 25%", "green 50%", "yellow 50%", "red 100%"]
-				controlPoints: ["blue 0%", "yellow 50%", "red 100%"]
+		//	controlPoints: ["purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"]
+		//	controlPoints: ["blue 0%", "yellow 50%", "red 100%"]
+
+		controlPoints: colors
+	
 			});
 
       },
@@ -29,7 +48,4 @@ HTMLWidgets.widget({
         // TODO: code to re-render the widget with a new size
 
       }
-
-    };
-  }
 });
