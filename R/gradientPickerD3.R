@@ -7,6 +7,12 @@
 #' @export
 gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = NULL) {
 
+  if(length(payload)==2){
+    shift_ticks <- payload$ticks - min(payload$ticks)
+    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),4)
+    payload[["colorstring"]] <- paste0(payload$colors,' ',payload[["procent"]]*100,'%')
+    payload$ticks <- sapply(payload$ticks,round,2)
+  }
   # forward options using x
   library("jsonlite")
   

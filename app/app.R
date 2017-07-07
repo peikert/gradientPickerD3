@@ -26,9 +26,11 @@ ui <- fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
-        div(style='width: 300px;overflow-x: scroll;',
-          div(style='width: 5000px;overflow:scroll;',gradientPickerD3Output('gpD3'))
-        )
+      #  div(style='width: 300px;overflow-x: scroll;',
+       #   div(style='width: 5000px;overflow:scroll;',
+              gradientPickerD3Output('gpD3')
+      #        )
+     #   )
       )
    )
 )

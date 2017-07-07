@@ -47,6 +47,8 @@
 		var canvas = $preview[0];
 		canvas.width = canvas.clientWidth;
 		canvas.height = canvas.clientHeight;
+		//console.log('canvas.width: '+canvas.width)
+		//console.log('canvas.height: '+canvas.height)
 		this.g2d = canvas.getContext("2d");
 
 		var $ctrlPtContainer = $("<div class='gradientPicker-ctrlPts'></div>");
@@ -83,8 +85,19 @@
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_right';
 			}
 		*/	
-		newDiv.style.left = ((this.g2d.canvas.width*controlProcent[i])-1)+'px';
-		newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line';
+		
+		if(i==0){
+			newDiv.style.left = ((canvas.width*controlProcent[i]))+'px';
+			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_left';
+			}
+		else if(i<(controlTicks.length-1)){
+			newDiv.style.left = ((canvas.width*controlProcent[i])-1)+'px';
+			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_middle';
+			}
+		else{
+			newDiv.style.left = ((canvas.width*controlProcent[i])-2)+'px';
+		newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_right';
+			}
 		
 		toAdd.appendChild(newDiv);
 		}
@@ -123,9 +136,19 @@
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_right';
 			}
 		*/
-			newDiv.style.left = ((this.g2d.canvas.width*controlProcent[i])-25)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_label';
-
+		
+		if(i==0){
+			newDiv.style.left = ((canvas.width*controlProcent[i])-25+5)+'px';
+			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_left';
+			}
+		else if(i<(controlTicks.length-1)){
+			newDiv.style.left = ((canvas.width*controlProcent[i])-25+5)+'px';
+			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_middle';
+			}
+		else{
+		newDiv.style.left = ((canvas.width*controlProcent[i])-25+5)+'px';
+		newDiv.className = 'gradientPicker-ctrlPts_scalemarks_right';
+			}
 		
 
 		toAdd.appendChild(newDiv);
@@ -150,16 +173,11 @@
 		//</>
 		
 		this.updatePreview = bind(this.updatePreview, this);
-		this.controlProcent = [];
+		this.controlPoints = [];
 		this.ctrlPtConfig = new ControlPtConfig(this.$el, opts);
-		for (var i = 0; i < opts.controlProcent.length; ++i) {
-			//console.log(opts.controlProcent[i])
-			//console.log(this.g2d.canvas.width*opts.controlProcent[i])
-			//var pos = this.g2d.canvas.width*opts.controlProcent[i]//-6
-			var pos = opts.controlProcent[i]
-			//console.log(pos)
-			var ctrlPt = this.createCtrlPt({position: pos, color: opts.controlColors[i]});
-			this.controlProcent.push(ctrlPt);
+		for (var i = 0; i < opts.controlPoints.length; ++i) {
+			var ctrlPt = this.createCtrlPt(opts.controlPoints[i]);
+			this.controlPoints.push(ctrlPt);
 		}
 
 		this.docClicked = bind(this.docClicked, this);
@@ -192,12 +210,12 @@
 
 		updatePreview: function() {
 			var result = [];
-			this.controlProcent.sort(ctrlPtComparator);
+			this.controlPoints.sort(ctrlPtComparator);
 			if (this.opts.orientation == "horizontal") {
 				var grad = this.g2d.createLinearGradient(0, 0, this.g2d.canvas.width, 0);
-				for (var i = 0; i < this.controlProcent.length; ++i) {
-					var pt = this.controlProcent[i];
-					grad.addColorStop((pt.position), pt.color);
+				for (var i = 0; i < this.controlPoints.length; ++i) {
+					var pt = this.controlPoints[i];
+					grad.addColorStop(pt.position, pt.color);
 					result.push({
 						position: pt.position,
 						color: pt.color
@@ -217,11 +235,10 @@
 		},
 
 		removeControlPoint: function(ctrlPt) {
-			console.log(ctrlPt)
-			var cpidx = this.controlProcent.indexOf(ctrlPt);
-			console.log(cpidx)
+			var cpidx = this.controlPoints.indexOf(ctrlPt);
+
 			if (cpidx != -1) {
-				this.controlProcent.splice(cpidx, 1);
+				this.controlPoints.splice(cpidx, 1);
 				ctrlPt.$el.remove();
 			}
 		},
@@ -239,26 +256,25 @@
 				color: colorStr
 			});
 
-			this.controlProcent.push(cp);
-			this.controlProcent.sort(ctrlPtComparator);
+			this.controlPoints.push(cp);
+			this.controlPoints.sort(ctrlPtComparator);
 		},
 
 		_generatePreviewStyles: function() {
 			//linear-gradient(top, rgb(217,230,163) 86%, rgb(227,249,159) 9%)
 			var str = this.opts.type + "-gradient(" + ((this.opts.type == "linear") ? (this.opts.fillDirection + ", ") : "");
 			var first = true;
-			for (var i = 0; i < this.controlProcent.length; ++i) {
-				var pt = this.controlProcent[i];
+			for (var i = 0; i < this.controlPoints.length; ++i) {
+				var pt = this.controlPoints[i];
 				if (!first) {
 					str += ", ";
 				} else {
 					first = false;
 				}
-				str += pt.color + " " + ((pt.position/this.g2d.canvas.width*100)|0) + "%";
+				str += pt.color + " " + ((pt.position*100)|0) + "%";
 			}
 
 			str = str + ")"
-			console.log(str)
 			var styles = [str, browserPrefix + str];
 			return styles;
 		}
@@ -274,21 +290,23 @@
 		this.$parentEl = $parentEl;
 		this.configView = ctrlPtConfig;
 
-		this.position = initialState.position; //this.g2d.canvas.width;
-		this.color = initialState.color;
-		
+		if (typeof initialState === "string") {
+			initialState = initialState.split(" ");
+			this.position = parseFloat(initialState[1])/100;
+			this.color = initialState[0];
+		} else {
+			this.position = initialState.position;
+			this.color = initialState.color;
+		}
 		this.listener = listener;
 		this.outerWidth = this.$el.outerWidth();
-		console.log(':::::')
-		console.log(($parentEl.width() * (this.position)) - (this.$el.outerWidth()/2))
-		console.log(($parentEl.width() * (this.position)))
-		console.log(':::::')
+
 		this.$el.css("background-color", this.color);
 		if (orientation == "horizontal") {
-			var pxLeft = ($parentEl.width() * (this.position)) - (this.$el.outerWidth()/2);
+			var pxLeft = ($parentEl.width() - this.$el.outerWidth()) * (this.position);
 			this.$el.css("left", pxLeft);
 		} else {
-			var pxTop = ($parentEl.height() * (this.position)) - (this.$el.outerHeight()/2);
+			var pxTop = ($parentEl.height() - this.$el.outerHeight()) * (this.position);
 			this.$el.css("top", pxTop);
 		}
 		
@@ -398,7 +416,7 @@
 	var methods = {
 		init: function(opts) {
 			opts = $.extend({
-				controlProcent: ["#FFF 0%", "#000 100%"],
+				controlPoints: ["#FFF 0%", "#000 100%"],
 				orientation: "horizontal",
 				type: "linear",
 				fillDirection: "left",

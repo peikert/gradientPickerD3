@@ -10,11 +10,14 @@ HTMLWidgets.widget({
 
 renderValue: function (el, x, instance) {
         console.log("-- Entered renderValue() --");
-    //  console.log(x)
+    // console.log(x)
     //  console.log(x.colors)
       
     //var colors =  ["purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"]
-     var colors =  x.colors
+     var colors =  x.colorstring
+     
+     
+     
    // console.log(colors);
       
  //     $( el ).append( "<p id='p1'>Test1</p>" );
@@ -37,8 +40,10 @@ renderValue: function (el, x, instance) {
 		//	controlPoints: ["purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"]
 		//	controlPoints: ["blue 0%", "yellow 50%", "red 100%"]
 
-		controlPoints: colors
-	
+		controlPoints: colors,
+	  controlColors: x.colors,
+	  controlTicks: x.ticks,
+	  controlProcent: x.procent
 			});
 
       },

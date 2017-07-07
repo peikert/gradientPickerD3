@@ -33,17 +33,7 @@
 	background-color = red;
 }
 
-.gradientPicker-ctrlPts_scalemarks_left {
-	width: 50px;
-	height: 20px;
-	position: absolute;
-	display: inline-block;
-    vertical-align: bottom;
-    text-align: left;
-	bottom: 0%;
-}
-
-.gradientPicker-ctrlPts_scalemarks_middle {
+.gradientPicker-ctrlPts_scalemarks_label {
 	width: 50px;
 	height: 20px;
 	position: absolute;
@@ -53,17 +43,7 @@
 	bottom: 0%;
 }
 
-.gradientPicker-ctrlPts_scalemarks_right {
-	width: 50px;
-	height: 20px;
-	position: absolute;
-	display: inline-block;
-    vertical-align: bottom;
-    text-align: center;
-	bottom: 0%;
-}
-
-.gradientPicker-ctrlPts_scalemarks_line_left {
+.gradientPicker-ctrlPts_scalemarks_line {
 	width: 2px;
 	height: 8px;
 	background-color: black;
@@ -71,25 +51,6 @@
 	display: inline-block;
 	bottom: 0%;
 }
-
-.gradientPicker-ctrlPts_scalemarks_line_middle {
-	width: 2px;
-	height: 8px;
-	background-color: black;
-	position: absolute;
-	display: inline-block;
-	bottom: 0%;
-}
-
-.gradientPicker-ctrlPts_scalemarks_line_right {
-	width: 2px;
-	height: 8px;
-	background-color: black;
-	position: absolute;
-	display: inline-block;
-	bottom: 0%;
-}
-
 
 .gradientPicker-ptConfig {
 	position: absolute;
