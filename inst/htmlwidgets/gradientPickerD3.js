@@ -23,13 +23,16 @@ renderValue: function (el, x, instance) {
  //     $( el ).append( "<p id='p1'>Test1</p>" );
     
 			$(el).gradientPicker({
-				change: function(points, styles) { // styles include standard style and browser-prefixed style
-				  
+				change: function(points, styles, ticks) { // styles include standard style and browser-prefixed style
 				  if (HTMLWidgets.shinyMode) {
           console.log(el.id)
 				  Shiny.onInputChange(
                 el.id + "_selected",
-                styles
+                points
+              );
+          Shiny.onInputChange(
+                el.id + "_ticks",
+                ticks
               );
 				  }
 //					for (i = 0; i < styles.length; ++i) {

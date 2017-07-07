@@ -216,6 +216,9 @@
 				for (var i = 0; i < this.controlPoints.length; ++i) {
 					var pt = this.controlPoints[i];
 					grad.addColorStop(pt.position, pt.color);
+					
+					// Idee hier delta der ticks berechnen und danach mit pt.position multiplizieren. Danach in result als ticks anhängen
+					
 					result.push({
 						position: pt.position,
 						color: pt.color

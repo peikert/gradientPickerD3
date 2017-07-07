@@ -213,7 +213,7 @@
 			if (this.opts.generateStyles)
 				var styles = this._generatePreviewStyles();
 
-			this.opts.change(result, styles);
+			this.opts.change(result, styles,this.opts.controlTicks);
 		},
 
 		removeControlPoint: function(ctrlPt) {

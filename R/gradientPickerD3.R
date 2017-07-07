@@ -9,13 +9,17 @@ gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = N
 
   if(length(payload)==2){
     payload$ticks <- sapply(payload$ticks, round, 8)
-    payload$ticks[1] <-  payload$ticks[1] - 0.00000001
+    payload$ticks[1] <-  payload$ticks[1] - 0.1
     n <- length(payload$ticks)
-    payload$ticks[n] <-  payload$ticks[n] + 0.00000001
+    payload$ticks[n] <-  payload$ticks[n] + 0.1
+    # payload$ticks[1] <-  payload$ticks[1] - 0.00000001
+    # n <- length(payload$ticks)
+    # payload$ticks[n] <-  payload$ticks[n] + 0.00000001
+    
     shift_ticks <- payload$ticks - min(payload$ticks)
-    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),4)
+    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),8)
     payload[["colorstring"]] <- paste0(payload$colors,' ',payload[["procent"]]*100,'%')
-    payload$ticks <- sapply(payload$ticks,round,2)
+    payload$ticks <- sapply(payload$ticks,round,8)
   }
   # forward options using x
   library("jsonlite")
