@@ -1,5 +1,18 @@
 /**
 @author Matt Crinklaw-Vogt (tantaman)
+@author Christian D. Peikert (peikert)
+*/
+
+/*
+The original JS script was created by Matt Crinklaw-Vogt and was modified by Christian D. Peikert.
+
+Major changes:
+- function now get to lists, one for color and one for the ticks
+- function returns ticks for colorboxes, there percentage of the total range as well as the color itself
+- added Shiny return value. Pushed after change ticks by dragging (after drop), after removing a colorbox and after changing of the color.
+- style is kicked of
+- marks and labels for init color position were added
+- open color menu of boxes is now opened by doubleclick
 */
 (function( $ ) {
 	if (!$.event.special.destroyed) {
@@ -36,132 +49,68 @@
 		browserPrefix = "-ms-"
 	else
 		browserPrefix = ""
-
+	
 	function GradientSelection($el, opts) {
 		this.$el = $el;
 		this.$el.css("position", "relative");
 		this.opts = opts;
-
-		var $preview = $("<canvas class='gradientPicker-preview'></canvas>");
+		/*
+id='gradientPicker-ctrlPts_preview'
+id='gradientPicker-ctrlPts_container'
+id='scalebar_line'
+id='scalebar_label'
+*/
+		var $preview = $("<canvas id=''gradientPicker-ctrlPts_preview'; class='gradientPicker-ctrlPts'></canvas>");
 		this.$el.append($preview);
 		var canvas = $preview[0];
 		canvas.width = canvas.clientWidth;
 		canvas.height = canvas.clientHeight;
 		this.g2d = canvas.getContext("2d");
 
-		var $ctrlPtContainer = $("<div class='gradientPicker-ctrlPts'></div>");
+		var $ctrlPtContainer = $("<div id='gradientPicker-ctrlPts_container'; class='gradientPicker-ctrlPts'></div>");
 		this.$el.append($ctrlPtContainer)
 		this.$ctrlPtContainer = $ctrlPtContainer;
 		
-		
-		// <add scale bar>
-		
-
+		//<scalebar_line
 		var $ctrlPtContainer_scalebar_line = $("<div id='scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
 		this.$el.append($ctrlPtContainer_scalebar_line);
 		var toAdd = document.createDocumentFragment();
-		//width_step = canvas.width/4;
-		//for (i = 0; i <5; i++) { 
-		controlProcent = opts.controlProcent
-		controlTicks = opts.controlTicks
-		for (i = 0; i <controlTicks.length; i++) { 
-		
-		var newDiv = document.createElement('div');
-		newDiv.id = 'sline'+i;
-		
-		/*
-		if(i==0){
-			newDiv.style.left = 0+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_left';
-			}
-		else if(i<4){
-			newDiv.style.left = ((width_step*i)-1)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_middle';
-			}
-		else{
-			newDiv.style.left = (canvas.width-2)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line_right';
-			}
-		*/	
-		newDiv.style.left = ((this.g2d.canvas.width*controlProcent[i])-1)+'px';
-		newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line';
-		
-		toAdd.appendChild(newDiv);
+		for (i = 0; i <this.opts.controlTicks.length; i++) { 
+			var newDiv = document.createElement('div');
+			newDiv.id = 'sline'+i;
+			newDiv.style.left = ((this.g2d.canvas.width*this.opts.controlProcent[i])-1)+'px';
+			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line';
+			toAdd.appendChild(newDiv);
 		}
 		document.getElementById('scalebar_line').appendChild(toAdd);
-		
-		
+		//>
+		//<scalebar_label
 		var $ctrlPtContainer_scalebar_label = $("<div id='scalebar_label'; class='gradientPicker-ctrlPts_scalebar_label'></div>");
 		this.$el.append($ctrlPtContainer_scalebar_label);
 		var toAdd = document.createDocumentFragment();
-		//width_step = canvas.width/4;
-		//console.log(opts.controlProcent)
-		controlProcent = opts.controlProcent
-		controlTicks = opts.controlTicks
-		for (i = 0; i <controlTicks.length; i++) { 
-		
-		var newDiv = document.createElement('div');
-		newDiv.id = 'sline'+i;
-		
-		//var newContent = document.createTextNode(((i*25)+"%")); 
-		var newContent = document.createTextNode(controlTicks[i]); 
-		
-		newDiv.appendChild(newContent);
-	//	if(i>1){console.log($('#slabel'+(i-1)))};
-		
-		/*
-		if(i==0){
-			newDiv.style.left = 0+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_left';
-			}
-		else if(i<4){
-			newDiv.style.left = ((width_step*i)-25)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_middle';
-			}
-		else{
-			newDiv.style.left = (canvas.width-50)+'px';
-			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_right';
-			}
-		*/
-			newDiv.style.left = ((this.g2d.canvas.width*controlProcent[i])-25)+'px';
+		for (i = 0; i <this.opts.controlTicks.length; i++) { 
+			var newDiv = document.createElement('div');
+			newDiv.id = 'sline'+i;
+			var newContent = document.createTextNode(this.opts.controlTicks[i]); 
+			newDiv.appendChild(newContent);
+			newDiv.style.left = ((this.g2d.canvas.width*this.opts.controlProcent[i])-25)+'px';
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_label';
-
-		
-
-		toAdd.appendChild(newDiv);
+			toAdd.appendChild(newDiv);
 		}
 		document.getElementById('scalebar_label').appendChild(toAdd);
-		
-		
-		
-		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		//</>
+		//>
 		
 		this.updatePreview = bind(this.updatePreview, this);
-		this.controlProcent = [];
-		this.ctrlPtConfig = new ControlPtConfig(this.$el, opts);
-		for (var i = 0; i < opts.controlProcent.length; ++i) {
-			//console.log(opts.controlProcent[i])
-			//console.log(this.g2d.canvas.width*opts.controlProcent[i])
-			//var pos = this.g2d.canvas.width*opts.controlProcent[i]//-6
-			var pos = opts.controlProcent[i]
-			//console.log(pos)
-			var ctrlPt = this.createCtrlPt({position: pos, color: opts.controlColors[i]});
-			this.controlProcent.push(ctrlPt);
-		}
 
+		this.ctrlPts = [];
+		this.ctrlPtConfig = new ControlPtConfig(this.$el, opts);
+		for (var i = 0; i < this.opts.controlProcent.length; ++i) {
+			var ctrlPt = this.createCtrlPt({position: this.opts.controlProcent[i], color: opts.controlColors[i]});
+			this.ctrlPts.push(ctrlPt);
+		}
+		console.log("new G ctrlPts:")
+		console.log(this.ctrlPts)
+		
 		this.docClicked = bind(this.docClicked, this);
 		this.destroyed = bind(this.destroyed, this);
 		$(document).bind("click", this.docClicked);
@@ -169,7 +118,8 @@
 		this.previewClicked = bind(this.previewClicked, this);
 		$preview.click(this.previewClicked);
 
-		this.updatePreview();
+		result = this.updatePreview();
+		this.opts.change(result); // new
 	}
 
 	GradientSelection.prototype = {
@@ -178,7 +128,7 @@
 		},
 
 		createCtrlPt: function(ctrlPtSetup) {
-			return new ControlPoint(this.$ctrlPtContainer, ctrlPtSetup, this.opts.orientation, this, this.ctrlPtConfig)
+			return new ControlPoint(this.$ctrlPtContainer, ctrlPtSetup, this.opts.orientation, this, this.ctrlPtConfig, this.opts)
 		},
 		
 		destroyed: function() {
@@ -186,42 +136,76 @@
 		},
 
 		updateOptions: function(opts) {
-			$.extend(this.opts, opts);
+		$.extend(this.opts, opts);
+			this.opts = opts;
+			console.log('updateOptions:')
+			console.log(opts)
+			console.log(this.opts)
+			console.log('<<')
 			this.updatePreview();
 		},
 
 		updatePreview: function() {
+			console.log('updatePreview:')
+			console.log(this.ctrlPts)
 			var result = [];
-			this.controlProcent.sort(ctrlPtComparator);
+			this.ctrlPts = this.ctrlPts.sort(ctrlPtComparator); // sort colorboxes by position
+			
+			console.log(this.opts.controlProcent)
 			if (this.opts.orientation == "horizontal") {
 				var grad = this.g2d.createLinearGradient(0, 0, this.g2d.canvas.width, 0);
-				for (var i = 0; i < this.controlProcent.length; ++i) {
-					var pt = this.controlProcent[i];
-					grad.addColorStop((pt.position), pt.color);
+			//	var delta = this.opts.controlTicks[this.opts.controlTicks.length-1] - this.opts.controlTicks[0]
+				var delta = this.opts.max_value - this.opts.min_value
+				console.log(delta)
+			//	for (var i = 0; i < this.opts.controlProcent.length; ++i) {
+			//	var pt = {position:this.opts.controlProcent[i], color: this.opts.controlColors[i]};
+			//		if(pt.position>1){
+			//			console.log('correct')
+			//			pt.position = Math.floor(pt.position); // somehow pt.position is sometime greater 1.00X
+			//		}
+				var controlProcent = []
+				var controlTicks = []
+				var controlColors = []	
+				for (var i = 0; i < this.ctrlPts.length; ++i) {	
+					pt = this.ctrlPts[i];
+					grad.addColorStop(pt.position, pt.color);
+					console.log(pt.position)
+					controlProcent.push(pt.position)
+					controlTicks.push((this.opts.min_value + (delta*pt.position)))
+					controlColors.push(pt.color)
 					result.push({
-						position: pt.position,
-						color: pt.color
+						position: controlProcent[i],
+					color: controlColors[i],
+					ticks: controlTicks[i]
 					});
 				}
+				this.opts.controlProcent = controlProcent
+				this.opts.controlTicks = controlTicks
+				this.opts.controlColors = controlColors	
+				if(result[0].position>0){
+					var r0 = {position: 0, color: result[0].color, ticks: this.opts.min_value}
+					result.unshift(r0);
+				}
+				if(result[result.length-1].position<1){
+					var rn = {position: 1, color: result[result.length-1].color, ticks: this.opts.max_value}
+					result.push(rn);
+				}
+				
 			} else {
 
 			}
 
 			this.g2d.fillStyle = grad;
 			this.g2d.fillRect(0, 0, this.g2d.canvas.width, this.g2d.canvas.height);
-
-			if (this.opts.generateStyles)
-				var styles = this._generatePreviewStyles();
-
-			this.opts.change(result, styles,this.opts.controlTicks);
+			return(result)
 		},
 
 		removeControlPoint: function(ctrlPt) {
-			console.log(ctrlPt)
-			var cpidx = this.controlProcent.indexOf(ctrlPt);
+			console.log('id: ')
+			var cpidx = this.ctrlPts.indexOf(ctrlPt)
 			console.log(cpidx)
 			if (cpidx != -1) {
-				this.controlProcent.splice(cpidx, 1);
+				this.ctrlPts.splice(cpidx, 1);
 				ctrlPt.$el.remove();
 			}
 		},
@@ -239,50 +223,24 @@
 				color: colorStr
 			});
 
-			this.controlProcent.push(cp);
-			this.controlProcent.sort(ctrlPtComparator);
-		},
-
-		_generatePreviewStyles: function() {
-			//linear-gradient(top, rgb(217,230,163) 86%, rgb(227,249,159) 9%)
-			var str = this.opts.type + "-gradient(" + ((this.opts.type == "linear") ? (this.opts.fillDirection + ", ") : "");
-			var first = true;
-			for (var i = 0; i < this.controlProcent.length; ++i) {
-				var pt = this.controlProcent[i];
-				if (!first) {
-					str += ", ";
-				} else {
-					first = false;
-				}
-				str += pt.color + " " + ((pt.position/this.g2d.canvas.width*100)|0) + "%";
-			}
-
-			str = str + ")"
-			console.log(str)
-			var styles = [str, browserPrefix + str];
-			return styles;
+			this.opts.controlProcent.push(cp);
+			this.opts.controlProcent.sort(ctrlPtComparator);
 		}
 	};
 
-	function ControlPoint($parentEl, initialState, orientation, listener, ctrlPtConfig) {
-
-		console.log(initialState)
-		console.log(orientation)
-
+	function ControlPoint($parentEl, initialState, orientation, listener, ctrlPtConfig, opts) {
+		
+		this.opts = opts;
 		this.$el = $("<div class='gradientPicker-ctrlPt'></div>");
 		$parentEl.append(this.$el);
 		this.$parentEl = $parentEl;
 		this.configView = ctrlPtConfig;
 
-		this.position = initialState.position; //this.g2d.canvas.width;
+		this.position = initialState.position; 
 		this.color = initialState.color;
 		
 		this.listener = listener;
 		this.outerWidth = this.$el.outerWidth();
-		console.log(':::::')
-		console.log(($parentEl.width() * (this.position)) - (this.$el.outerWidth()/2))
-		console.log(($parentEl.width() * (this.position)))
-		console.log(':::::')
 		this.$el.css("background-color", this.color);
 		if (orientation == "horizontal") {
 			var pxLeft = ($parentEl.width() * (this.position)) - (this.$el.outerWidth()/2);
@@ -293,8 +251,10 @@
 		}
 		
 		this.drag = bind(this.drag, this);
-		this.stop = bind(this.stop, this);
+		this.stop = bind(this.stop, this, this.opts);
 		this.clicked = bind(this.clicked, this);
+		this.dbclicked = bind(this.dbclicked, this);
+		//this.drop = bind(this.dropPoint, this);
 		this.colorChanged = bind(this.colorChanged, this);
 		this.$el.draggable({
 			axis: (orientation == "horizontal") ? "x" : "y",
@@ -304,6 +264,8 @@
 		});
 		this.$el.css("position", 'absolute');
 		this.$el.click(this.clicked);
+		this.$el.dblclick(this.dbclicked);
+		//this.$el.on("drop",this.dropPoint);
 	}
 
 	ControlPoint.prototype = {
@@ -312,28 +274,52 @@
 			var left = ui.position.left;
 			this.position = (left / (this.$parentEl.width() - this.outerWidth));
 			this.listener.updatePreview();
+			
 		},
-
 		stop: function(e, ui) {
-			this.listener.updatePreview();
-			this.configView.show(this.$el.position(), this.color, this);
+			//this.opts.change('TRUE');
+			var result = this.listener.updatePreview();
+			this.opts.change(result);
+			//this.opts.drop('TRUE');
+			//this.listener.updatePreview();
+			//this.configView.show(this.$el.position(), this.color, this);
+			e.stopPropagation();
 		},
 
 		clicked: function(e) {
-			this.configView.show(this.$el.position(), this.color, this);
+		//	this.configView.show(this.$el.position(), this.color, this);
+		//	e.preventDefault();
 			e.stopPropagation();
+			return false;
+		},
+		/*
+		dropPoint: function(e) {
+			alert('drop');
+			//e.preventDefault();
+			e.stopPropagation();
+			return false;
+		},
+		*/
+		dbclicked: function(e) {
+			this.configView.show(this.$el.position(), this.color, this);
+			e.preventDefault();
+			e.stopPropagation();
+			//alert('dbclicked');
 			return false;
 		},
 
 		colorChanged: function(c) {
 			this.color = c;
 			this.$el.css("background-color", this.color);
-			this.listener.updatePreview();
+			var result = this.listener.updatePreview();
+			this.opts.change(result);
 		},
 
 		removeClicked: function() {
+			//console.log(this)
 			this.listener.removeControlPoint(this);
-			this.listener.updatePreview();
+			var result = this.listener.updatePreview();
+			this.opts.change(result);
 		}
 	};
 
@@ -397,6 +383,8 @@
 
 	var methods = {
 		init: function(opts) {
+			console.log('init')
+			console.log(opts)
 			opts = $.extend({
 				controlProcent: ["#FFF 0%", "#000 100%"],
 				orientation: "horizontal",
@@ -404,20 +392,36 @@
 				fillDirection: "left",
 				generateStyles: true,
 				change: function() {}
-			}, opts);
-
+			}, opts); // adding the opts again will overwrite the pre defined opts
+			opts = $.extend({min_value: opts.controlTicks[0] , max_value:opts.controlTicks[opts.controlTicks.length-1]},opts)
+			console.log(opts)
+			/* function can be used to iterate over any collection, 
+			whether it is an object or an array. In the case of an 
+			array, the callback is passed an array index and a 
+			corresponding array value each time.*/
 			this.each(function() {
 				var $this = $(this);
-				var gradSel = new GradientSelection($this, opts);
-				$this.data("gradientPicker-sel", gradSel);
+				//var gradSel = new GradientSelection($this, opts);
+				var gradSel = $this.data("gradientPicker-sel"); // ToDo
+				if (gradSel == null) {							// ToDo
+					console.log('new init')
+					var gradSel = new GradientSelection($this, opts);// ToDo
+					$this.data("gradientPicker-sel", gradSel);
+				}else{// ToDo
+					console.log('new update')
+					gradSel.updateOptions(opts);// ToDo
+				}// ToDo
+				//$this.data("gradientPicker-sel", gradSel);
 			});
 		},
 
 		update: function(opts) {
+			console.log('update')
 			this.each(function() {
 				var $this = $(this);
 				var gradSel = $this.data("gradientPicker-sel");
 				if (gradSel != null) {
+					opts = $.extend({min_value: opts.controlTicks[0] , max_value:opts.controlTicks[opts.controlTicks.length-1]},opts)
 					gradSel.updateOptions(opts);
 				}
 			});
@@ -425,6 +429,8 @@
 	};
 
 	$.fn.gradientPicker = function(method, opts) {
+		console.log('$.fn.gradientPicker:')
+		console.log(method)
 		if (typeof method === "string" && method !== "init") {
 			methods[method].call(this, opts);
 		} else {

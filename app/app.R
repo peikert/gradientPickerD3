@@ -28,6 +28,7 @@ ui <- fluidPage(
       mainPanel(
       #  div(style='width: 300px;overflow-x: scroll;',
        #   div(style='width: 5000px;overflow:scroll;',
+        actionButton('btreload','reload'),
               gradientPickerD3Output('gpD3')
       #        )
      #   )
@@ -39,26 +40,45 @@ ui <- fluidPage(
 server <- function(input, output) {
    
 
-  payload <- list(colors=c("purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"),test='test')
+ # payload <- list(colors=c("purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"))
+  payload <- list(
+    colors=c("purple","blue", "green", "yellow", "red"),
+    ticks=c(-5,-2,0,2,5)
+                  )
   output$gpD3 <- renderGradientPickerD3( gradientPickerD3(payload))
  
- test <- reactive({
-    req(input$gpD3_selected)
-  #  req(input$gpD3_selected())
-    gcolors <- input$gpD3_selected
-    print(class(gcolors))
-  #  [1]
- #   gcolors <- 'linear-gradient(left, purple 0%, blue 24%, green 52%, yellow 74%, red 100%)'
-
-     if(is.null(gcolors)) return(NULL)
-       df_gcolors <- as.data.frame(str_match_all(gcolors,'([a-z]+) (\\d{1,3})%')[[1]][,2:3],stringsAsFactors=FALSE)
-       print(df_gcolors)
-       colnames(df_gcolors) <- c("color","interval")
-       setHeatmapColors(data=NULL,color_list=df_gcolors$color,intervals=as.numeric(df_gcolors$interval))
-      
-    #   df_gcolors
-    })
- observe(test())
+ # test <- reactive({
+ #    req(input$gpD3_selected)
+ #  #  req(input$gpD3_selected())
+ #    gcolors <- input$gpD3_selected
+ #    print(class(gcolors))
+ #  #  [1]
+ # #   gcolors <- 'linear-gradient(left, purple 0%, blue 24%, green 52%, yellow 74%, red 100%)'
+ # 
+ #     if(is.null(gcolors)) return(NULL)
+ #       df_gcolors <- as.data.frame(str_match_all(gcolors,'([a-z]+) (\\d{1,3})%')[[1]][,2:3],stringsAsFactors=FALSE)
+ #       print(df_gcolors)
+ #       colnames(df_gcolors) <- c("color","interval")
+ #       setHeatmapColors(data=NULL,color_list=df_gcolors$color,intervals=as.numeric(df_gcolors$interval))
+ #      
+ #    #   df_gcolors
+ #    })
+  observeEvent(input$btreload,{
+    payload <- list(
+      colors=c("purple","blue", "green", "yellow", "red"),
+      ticks=c(-5,runif(1, -4, -1),0,runif(1, 1, 4),5)
+    )
+    output$gpD3 <- renderGradientPickerD3( gradientPickerD3(payload))
+    
+  })
+# observe(print(input$gpD3_selected))
+  
+observe({
+  req(input$gpD3_drop)
+  df <- as.data.frame(matrix(unlist(input$gpD3_drop), ncol = 3, byrow = TRUE))
+  colnames(df) <-  c('position','color','tick')
+  print(df)
+  })
 }
 
 # Run the application 
