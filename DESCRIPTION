@@ -1,12 +1,23 @@
 Package: gradientPickerD3
+Type: Package
 Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: Matt Crinklaw-Vogt (nick: tantaman)https://github.com/tantaman/
-    jquery-gradient-picker
+Version: 0.1.0.0
+Authors@R: person("Christian D.","Peikert", role = c("aut", "cre"), email = "christian.peikert@biologie.uni-freiburg.de")
+Authors@JS: person("Christian D.","Peikert", role = c("aut", "cre"), email = "christian.peikert@biologie.uni-freiburg.de")
+Description: ...... Matt Crinklaw-Vogt (nick: tantaman)https://github.com/tantaman/ jquery-gradient-picker
 Depends:
     R (>= 3.3.1)
-License: What license is it under?
-Encoding: UTF-8
+Imports:
+    htmlwidgets,
+	    jsonlite,
+		shiny
+Suggests:
+    knitr
+VignetteBuilder: knitr
 LazyData: true
+Encoding: UTF-8
+License: GPL-2
+Collate:
+    'gradientPickerD3.R'
+	'runExample.R'
 RoxygenNote: 5.0.1

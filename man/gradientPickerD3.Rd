@@ -2,11 +2,18 @@
 % Please edit documentation in R/gradientPickerD3.R
 \name{gradientPickerD3}
 \alias{gradientPickerD3}
-\title{<Add Title>}
+\title{gradientPickerD3}
 \usage{
 gradientPickerD3(payload, width = NULL, height = NULL, elementId = NULL)
 }
+\arguments{
+\item{payload}{list containing 'ticks' and 'colors' to init the gradient}
+
+\item{width, height}{Must be a valid CSS unit (like \code{'100\%'},}
+
+\item{elementId}{output variable to read from}
+}
 \description{
-<Add Description>
+creates an interactive color gradient for shiny
 }
 
