@@ -57,10 +57,10 @@ Major changes:
 		/*
 id='gradientPicker-ctrlPts_preview'
 id='gradientPicker-ctrlPts_container'
-id='scalebar_line'
-id='scalebar_label'
+id='gradientPicker-removescalebar_line'
+id='gradientPicker-scalebar_label'
 */
-		var $preview = $("<canvas id=''gradientPicker-ctrlPts_preview'; class='gradientPicker-ctrlPts'></canvas>");
+		var $preview = $("<canvas id='gradientPicker-ctrlPts_preview'; class='gradientPicker-ctrlPts'></canvas>");
 		this.$el.append($preview);
 		var canvas = $preview[0];
 		canvas.width = canvas.clientWidth;
@@ -72,7 +72,7 @@ id='scalebar_label'
 		this.$ctrlPtContainer = $ctrlPtContainer;
 		
 		//<scalebar_line
-		var $ctrlPtContainer_scalebar_line = $("<div id='scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
+		var $ctrlPtContainer_scalebar_line = $("<div id='gradientPicker-scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
 		this.$el.append($ctrlPtContainer_scalebar_line);
 		var toAdd = document.createDocumentFragment();
 		for (i = 0; i <this.opts.controlTicks.length; i++) { 
@@ -82,10 +82,10 @@ id='scalebar_label'
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_line';
 			toAdd.appendChild(newDiv);
 		}
-		document.getElementById('scalebar_line').appendChild(toAdd);
+		document.getElementById('gradientPicker-scalebar_line').appendChild(toAdd);
 		//>
 		//<scalebar_label
-		var $ctrlPtContainer_scalebar_label = $("<div id='scalebar_label'; class='gradientPicker-ctrlPts_scalebar_label'></div>");
+		var $ctrlPtContainer_scalebar_label = $("<div id='gradientPicker-scalebar_label'; class='gradientPicker-ctrlPts_scalebar_label'></div>");
 		this.$el.append($ctrlPtContainer_scalebar_label);
 		var toAdd = document.createDocumentFragment();
 		for (i = 0; i <this.opts.controlTicks.length; i++) { 
@@ -97,7 +97,7 @@ id='scalebar_label'
 			newDiv.className = 'gradientPicker-ctrlPts_scalemarks_label';
 			toAdd.appendChild(newDiv);
 		}
-		document.getElementById('scalebar_label').appendChild(toAdd);
+		document.getElementById('gradientPicker-scalebar_label').appendChild(toAdd);
 		//>
 		
 		this.updatePreview = bind(this.updatePreview, this);
@@ -403,13 +403,22 @@ id='scalebar_label'
 				var $this = $(this);
 				//var gradSel = new GradientSelection($this, opts);
 				var gradSel = $this.data("gradientPicker-sel"); // ToDo
+				
 				if (gradSel == null) {							// ToDo
 					console.log('new init')
 					var gradSel = new GradientSelection($this, opts);// ToDo
 					$this.data("gradientPicker-sel", gradSel);
 				}else{// ToDo
+				debugger;
 					console.log('new update')
-					gradSel.updateOptions(opts);// ToDo
+					document.getElementById('gradientPicker-ctrlPts_container').remove();
+					document.getElementById('gradientPicker-scalebar_line').remove();
+					document.getElementById('gradientPicker-scalebar_label').remove();
+					document.getElementById('gradientPicker-ctrlPts_preview').remove();
+					
+					var gradSel = $this.data("gradientPicker-sel");
+					var gradSel = new GradientSelection($this, opts);// ToDo
+					$this.data("gradientPicker-sel", gradSel);
 				}// ToDo
 				//$this.data("gradientPicker-sel", gradSel);
 			});
