@@ -9,4 +9,3 @@ runExample()
 \description{
 starts a test shiny app
 }
-

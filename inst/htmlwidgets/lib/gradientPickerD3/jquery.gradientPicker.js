@@ -202,6 +202,8 @@ id='gradientPicker-scalebar_label'
 
 		removeControlPoint: function(ctrlPt) {
 			console.log('id: ')
+			console.log(ctrlPt)
+			console.log(this.ctrlPts)
 			var cpidx = this.ctrlPts.indexOf(ctrlPt)
 			console.log(cpidx)
 			if (cpidx != -1) {
@@ -218,11 +220,15 @@ id='gradientPicker-scalebar_label'
 			var imgData = this.g2d.getImageData(x,y,1,1);
 			var colorStr = "rgb(" + imgData.data[0] + "," + imgData.data[1] + "," + imgData.data[2] + ")";
 
+			
+			console.log('createCtrlPt: ')
 			var cp = this.createCtrlPt({
 				position: (x / this.g2d.canvas.width),  // -6
 				color: colorStr
 			});
-
+			this.ctrlPts.push(cp);
+			result = this.updatePreview();
+			this.opts.change(result)
 			this.opts.controlProcent.push(cp);
 			this.opts.controlProcent.sort(ctrlPtComparator);
 		}
