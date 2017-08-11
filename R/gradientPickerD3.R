@@ -60,7 +60,7 @@ gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = N
 #' @name gradientPickerD3-shiny
 #'
 #' @export
-gradientPickerD3Output <- function(outputId, width = '100%', height = '400px'){
+gradientPickerD3Output <- function(outputId, width = '100%', height = '100%'){
   htmlwidgets::shinyWidgetOutput(outputId, 'gradientPickerD3', width, height, package = 'gradientPickerD3')
 }
 

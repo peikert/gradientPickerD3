@@ -119,6 +119,7 @@ id='gradientPicker-scalebar_label'
 		$preview.click(this.previewClicked);
 
 		result = this.updatePreview();
+		console.log(result)
 		this.opts.change(result); // new
 	}
 
@@ -234,6 +235,26 @@ id='gradientPicker-scalebar_label'
 		}
 	};
 
+	function allMatches(string, regex, index = 1) {
+		//index || (index = 1); // default to the first capturing group
+		var matches = [];
+		var match = null;
+		while (match = regex.exec(string)) {
+			matches.push(match[index]);
+		}
+	return matches;
+	}
+	function convertToHex(c) {
+    
+	if(typeof stringValue){c = parseInt(c)}
+	var hex = c.toString(16);
+	return hex.length == 1 ? "0" + hex : hex;
+	}
+
+	function convertRgbToHex(rgb) {
+	return "#" + convertToHex(rgb[0]) + convertToHex(rgb[1]) + convertToHex(rgb[2]);
+	}
+	
 	function ControlPoint($parentEl, initialState, orientation, listener, ctrlPtConfig, opts) {
 		
 		this.opts = opts;
@@ -244,6 +265,12 @@ id='gradientPicker-scalebar_label'
 
 		this.position = initialState.position; 
 		this.color = initialState.color;
+
+		var regEx = /(\d+)/g;
+		matches = allMatches(this.color, regEx, 1);
+		if(matches.length==3){
+		this.color = convertRgbToHex(matches);
+		}
 		
 		this.listener = listener;
 		this.outerWidth = this.$el.outerWidth();
@@ -316,6 +343,8 @@ id='gradientPicker-scalebar_label'
 
 		colorChanged: function(c) {
 			this.color = c;
+			console.log("line 320:")
+			console.log(c)
 			this.$el.css("background-color", this.color);
 			var result = this.listener.updatePreview();
 			this.opts.change(result);
