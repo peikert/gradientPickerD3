@@ -2,10 +2,11 @@
 
 export(gradientPickerD3)
 export(gradientPickerD3Output)
+export(gradientPickerD3_example)
 export(renderGradientPickerD3)
-export(runExample)
+import(shiny)
+import(stats)
 importFrom(htmlwidgets,createWidget)
 importFrom(htmlwidgets,shinyRenderWidget)
 importFrom(htmlwidgets,shinyWidgetOutput)
 importFrom(jsonlite,toJSON)
-importFrom(shiny,runApp)

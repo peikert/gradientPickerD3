@@ -1,24 +1,27 @@
 Package: gradientPickerD3
 Type: Package
-Title: What the Package Does (one line, title case)
+Title: Interactive Color Gradient Picker Using 'htmlwidgets' and the modified JS script 'jquery-gradient-picker'
 Version: 0.1.0.0
 Authors@R: person("Christian D.","Peikert", role = c("aut", "cre"), email = "christian.peikert@biologie.uni-freiburg.de")
 Authors@JS: person("Christian D.","Peikert", role = c("aut", "cre"), email = "christian.peikert@biologie.uni-freiburg.de")
-Description: ...... Matt Crinklaw-Vogt (nick: tantaman)https://github.com/tantaman/ jquery-gradient-picker
+Maintainer: Christian D. Peikert <christian.peikert@biologie.uni-freiburg.de>
+Description: Widget for an interactive selection and modification of color gradient. gradientPickerD3 allows the adding, removing and replacement of color ticks. List of numeric value will automatically translate in their corresponding tick position within the numeric range. App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient. The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt (nick: tantaman)https://github.com/tantaman/. Widget and JS modification was done by CD. Peikert.
 Depends:
     R (>= 3.3.1)
 Imports:
     htmlwidgets,
-	    jsonlite,
-		shiny
+	jsonlite,
+	shiny
 Suggests:
     knitr
 VignetteBuilder: knitr
+URL: https://github.com/peikert/gradientPickerD3
+BugReports: https://github.com/peikert/gradientPickerD3/issues
 LazyData: true
 Encoding: UTF-8
-License: GPL-2
+License: GPL-3
 Collate:
     'gradientPickerD3.R'
-	'runExample.R'
+	'gradientPickerD3_example.R'
 RoxygenNote: 6.0.1
 

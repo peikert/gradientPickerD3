@@ -1,35 +1,43 @@
 #' gradientPickerD3
 #'
-#' creates an interactive color gradient for shiny
-#' @param payload list containing 'ticks' and 'colors' to init the gradient
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'},
+#' Creates a widget for an interactive selection and modification of color gradient. 
+#' gradientPickerD3 allows the adding, removing and replacement of color ticks. 
+#' List of numeric value will automatically translate in their corresponding tick position within the numeric range. 
+#' App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient. 
+#' The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt. 
+#' Widget and JS modifications was done by CD. Peikert.
+#' 
+#' @param payload list containing 'ticks' and 'colors' to init the gradient. Ticks have to been numerical and in a logical order. Colors can provide as R colors or HEX format.
+#' @param width,height Must be a valid CSS unit (like \code{'100\%'})
 #' @param elementId output variable to read from
 #' @param border_extensions add to the min and max data range to cover the whole color spectrum
+#' @param decimal_places number of decimal places
 #' @importFrom htmlwidgets createWidget
 #' @importFrom jsonlite toJSON
+#' @examples 
+#' ticks <- c(-1.8740103,  -0.0040747,  1.4022244,  2.2177949,  3.2116766)
+#' payload <- list(
+#'   colors=c("purple","blue", "green", "yellow", "red"),
+#'   ticks=ticks
+#' )
+#' gradientPickerD3(payload)
+#' @seealso \link{gradientPickerD3_example}
+#' @source The interface was designed based on jquery-gradient-picker \url{https://github.com/tantaman/jquery-gradient-picker}, \link{htmlwidgets} and \link{shiny}
 #' @export
 #' 
-gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = NULL, border_extensions=0.001) {
+gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = NULL, border_extensions=0.001, decimal_places=8) {
 
   if(length(payload)==2){
-    payload$ticks <- sapply(payload$ticks, round, 8)
-    # payload$ticks[1] <-  payload$ticks[1] - 0.1
-    # n <- length(payload$ticks)
-    # payload$ticks[n] <-  payload$ticks[n] + 0.1
+    payload$ticks <- sapply(payload$ticks, round, decimal_places)
     payload$ticks[1] <-  payload$ticks[1] - border_extensions
     n <- length(payload$ticks)
     payload$ticks[n] <-  payload$ticks[n] + border_extensions
-    
     shift_ticks <- payload$ticks - min(payload$ticks)
-    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),8)
+    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),decimal_places)
     payload[["colorstring"]] <- paste0(payload$colors,' ',payload[["procent"]]*100,'%')
-    payload$ticks <- sapply(payload$ticks,round,8)
-    print(payload)
+    payload$ticks <- sapply(payload$ticks,round,decimal_places)
   }
-  # forward options using x
-  # library("jsonlite")
   
-#  payload <- list(colors=c("purple 0%","blue 25%", "green 50%", "yellow 75%", "red 100%"),test='test')
   x <- jsonlite::toJSON(payload)
 
   # create widget

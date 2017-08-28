@@ -14,14 +14,8 @@ renderValue: function (el, x, instance) {
 			$(el).gradientPicker({
 				change: function(points) { 
 				  if (HTMLWidgets.shinyMode) {
-
-				  Shiny.onInputChange(
-                el.id + "_selected",
-                points
-              );
-              
              Shiny.onInputChange(
-                el.id + "_drop",
+                el.id + "_table",
                 points
               );  
 				  }
@@ -35,7 +29,4 @@ renderValue: function (el, x, instance) {
 
       resize: function(width, height) {
 
-        // TODO: code to re-render the widget with a new size
-
-      }
 });

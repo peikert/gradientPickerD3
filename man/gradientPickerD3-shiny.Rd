@@ -6,7 +6,7 @@
 \alias{renderGradientPickerD3}
 \title{Shiny bindings for gradientPickerD3}
 \usage{
-gradientPickerD3Output(outputId, width = "100\%", height = "400px")
+gradientPickerD3Output(outputId, width = "100\%", height = "100\%")
 
 renderGradientPickerD3(expr, env = parent.frame(), quoted = FALSE)
 }
