@@ -27,7 +27,7 @@ gradientPickerD3 allows the adding, removing and replacement of color ticks.
 List of numeric value will automatically translate in their corresponding tick position within the numeric range. 
 App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient. 
 The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt. 
-Widget and JS modification was done by CD. Peikert.
+Widget and JS modifications was done by CD. Peikert.
 }
 \examples{
 ticks <- c(-1.8740103,  -0.0040747,  1.4022244,  2.2177949,  3.2116766)

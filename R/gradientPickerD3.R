@@ -1,12 +1,12 @@
 #' gradientPickerD3
 #'
-#' Creates a widget for an interactive selection and modification of color gradient. 
-#' gradientPickerD3 allows the adding, removing and replacement of color ticks. 
-#' List of numeric value will automatically translate in their corresponding tick position within the numeric range. 
-#' App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient. 
-#' The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt. 
+#' Creates a widget for an interactive selection and modification of color gradient.
+#' gradientPickerD3 allows the adding, removing and replacement of color ticks.
+#' List of numeric value will automatically translate in their corresponding tick position within the numeric range.
+#' App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient.
+#' The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt.
 #' Widget and JS modifications was done by CD. Peikert.
-#' 
+#'
 #' @param payload list containing 'ticks' and 'colors' to init the gradient. Ticks have to been numerical and in a logical order. Colors can provide as R colors or HEX format.
 #' @param width,height Must be a valid CSS unit (like \code{'100\%'})
 #' @param elementId output variable to read from
@@ -14,7 +14,7 @@
 #' @param decimal_places number of decimal places
 #' @importFrom htmlwidgets createWidget
 #' @importFrom jsonlite toJSON
-#' @examples 
+#' @examples
 #' ticks <- c(-1.8740103,  -0.0040747,  1.4022244,  2.2177949,  3.2116766)
 #' payload <- list(
 #'   colors=c("purple","blue", "green", "yellow", "red"),
@@ -24,32 +24,39 @@
 #' @seealso \link{gradientPickerD3_example}
 #' @source The interface was designed based on jquery-gradient-picker \url{https://github.com/tantaman/jquery-gradient-picker}, \link{htmlwidgets} and \link{shiny}
 #' @export
-#' 
-gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = NULL, border_extensions=0.001, decimal_places=8) {
-
-  if(length(payload)==2){
-    payload$ticks <- sapply(payload$ticks, round, decimal_places)
-    payload$ticks[1] <-  payload$ticks[1] - border_extensions
-    n <- length(payload$ticks)
-    payload$ticks[n] <-  payload$ticks[n] + border_extensions
-    shift_ticks <- payload$ticks - min(payload$ticks)
-    payload[["procent"]] <- round(shift_ticks / diff(range(shift_ticks)),decimal_places)
-    payload[["colorstring"]] <- paste0(payload$colors,' ',payload[["procent"]]*100,'%')
-    payload$ticks <- sapply(payload$ticks,round,decimal_places)
+#'
+gradientPickerD3 <-
+  function(payload,
+           width = NULL,
+           height = NULL,
+           elementId = NULL,
+           border_extensions = 0.001,
+           decimal_places = 8) {
+    if (length(payload) == 2) {
+      payload$ticks <- sapply(payload$ticks, round, decimal_places)
+      payload$ticks[1] <-  payload$ticks[1] - border_extensions
+      n <- length(payload$ticks)
+      payload$ticks[n] <-  payload$ticks[n] + border_extensions
+      shift_ticks <- payload$ticks - min(payload$ticks)
+      payload[["procent"]] <-
+        round(shift_ticks / diff(range(shift_ticks)), decimal_places)
+      payload[["colorstring"]] <-
+        paste0(payload$colors, ' ', payload[["procent"]] * 100, '%')
+      payload$ticks <- sapply(payload$ticks, round, decimal_places)
+    }
+    
+    x <- jsonlite::toJSON(payload)
+    
+    # create widget
+    htmlwidgets::createWidget(
+      name = 'gradientPickerD3',
+      x,
+      width = width,
+      height = height,
+      package = 'gradientPickerD3',
+      elementId = elementId
+    )
   }
-  
-  x <- jsonlite::toJSON(payload)
-
-  # create widget
-  htmlwidgets::createWidget(
-    name = 'gradientPickerD3',
-    x,
-    width = width,
-    height = height,
-    package = 'gradientPickerD3',
-    elementId = elementId
-  )
-}
 
 #' Shiny bindings for gradientPickerD3
 #'
@@ -68,14 +75,22 @@ gradientPickerD3 <- function(payload, width = NULL, height = NULL, elementId = N
 #' @name gradientPickerD3-shiny
 #'
 #' @export
-gradientPickerD3Output <- function(outputId, width = '100%', height = '100%'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'gradientPickerD3', width, height, package = 'gradientPickerD3')
-}
+gradientPickerD3Output <-
+  function(outputId,
+           width = '100%',
+           height = '100%') {
+    htmlwidgets::shinyWidgetOutput(outputId, 'gradientPickerD3', width, height, package = 'gradientPickerD3')
+  }
 
 #' @importFrom htmlwidgets shinyRenderWidget
 #' @rdname gradientPickerD3-shiny
 #' @export
-renderGradientPickerD3 <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, gradientPickerD3Output, env, quoted = TRUE)
-}
+renderGradientPickerD3 <-
+  function(expr,
+           env = parent.frame(),
+           quoted = FALSE) {
+    if (!quoted) {
+      expr <- substitute(expr)
+    } # force quoted
+    htmlwidgets::shinyRenderWidget(expr, gradientPickerD3Output, env, quoted = TRUE)
+  }
