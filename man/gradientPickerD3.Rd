@@ -11,23 +11,23 @@ gradientPickerD3(payload, width = NULL, height = NULL, elementId = NULL,
   border_extensions = 0.001, decimal_places = 8)
 }
 \arguments{
-\item{payload}{list containing 'ticks' and 'colors' to init the gradient. Ticks have to been numerical and in a logical order. Colors can provide as R colors or HEX format.}
+\item{payload}{list containing 'ticks' and 'colors' to initialize the gradient. Ticks have to been numerical and in a logical order. Colors can be provided as R colors or HEX format.}
 
-\item{width, height}{Must be a valid CSS unit (like \code{'100\%'})}
+\item{width, height}{must be a valid CSS unit (like \code{'100\%'})}
 
-\item{elementId}{output variable to read from}
+\item{elementId}{\code{string} id as a valid \code{CSS} element id}
 
 \item{border_extensions}{add to the min and max data range to cover the whole color spectrum}
 
 \item{decimal_places}{number of decimal places}
 }
 \description{
-Creates a widget for an interactive selection and modification of color gradient. 
-gradientPickerD3 allows the adding, removing and replacement of color ticks. 
-List of numeric value will automatically translate in their corresponding tick position within the numeric range. 
-App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient. 
-The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt. 
-Widget and JS modifications was done by CD. Peikert.
+Creates a widget for an interactive selection and modification of a color gradient.
+gradientPickerD3 allows the addition, removment and replacement of color ticks.
+List of numeric values will automatically translate in its corresponding tick position within the numeric range.
+App returns a R data.frame containing tick values, colors and the positions in percent (0.0 to 1.0) for each color tick in the gradient.
+The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt.
+Widget and JS modifications were done by CD. Peikert.
 }
 \examples{
 ticks <- c(-1.8740103,  -0.0040747,  1.4022244,  2.2177949,  3.2116766)

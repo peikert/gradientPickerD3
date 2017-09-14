@@ -1,15 +1,15 @@
 #' gradientPickerD3
 #'
-#' Creates a widget for an interactive selection and modification of color gradient.
-#' gradientPickerD3 allows the adding, removing and replacement of color ticks.
-#' List of numeric value will automatically translate in their corresponding tick position within the numeric range.
-#' App returns a R data.frame containing tick values, colors and the positions in percent (0 to 1) for each color tick in the gradient.
+#' Creates a widget for an interactive selection and modification of a color gradient.
+#' gradientPickerD3 allows the addition, removment and replacement of color ticks.
+#' List of numeric values will automatically translate in its corresponding tick position within the numeric range.
+#' App returns a R data.frame containing tick values, colors and the positions in percent (0.0 to 1.0) for each color tick in the gradient.
 #' The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt.
-#' Widget and JS modifications was done by CD. Peikert.
+#' Widget and JS modifications were done by CD. Peikert.
 #'
-#' @param payload list containing 'ticks' and 'colors' to init the gradient. Ticks have to been numerical and in a logical order. Colors can provide as R colors or HEX format.
-#' @param width,height Must be a valid CSS unit (like \code{'100\%'})
-#' @param elementId output variable to read from
+#' @param payload list containing 'ticks' and 'colors' to initialize the gradient. Ticks have to been numerical and in a logical order. Colors can be provided as R colors or HEX format.
+#' @param width,height must be a valid CSS unit (like \code{'100\%'})
+#' @param elementId \code{string} id as a valid \code{CSS} element id
 #' @param border_extensions add to the min and max data range to cover the whole color spectrum
 #' @param decimal_places number of decimal places
 #' @importFrom htmlwidgets createWidget

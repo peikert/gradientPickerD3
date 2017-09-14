@@ -6,12 +6,12 @@
 The original JS script was created by Matt Crinklaw-Vogt (https://github.com/tantaman/jquery-gradient-picker) and was modified by Christian D. Peikert.
 
 Major changes:
-- function now get to lists, one for color and one for the ticks
-- function returns color ticks, there percentage of the total range as well as the color itself
+- function call requires now two lists, one for color and one for the ticks
+- function returns color ticks, the percentage of the total range as well as the color itself
 - added Shiny return value. Changes will be pushed after: change ticks by drag and (after) drop, removing a color tick or changing of the color.
 - style is not provided any more
-- marks and labels for initialization color position were added
-- open color menu of boxes is now opened by doubleclick
+- ticks and labels for initialization color positions were visualised
+- color menu of boxes is now opened by doubleclick
 */
 (function($) {
     if (!$.event.special.destroyed) {
@@ -65,7 +65,6 @@ Major changes:
         this.$el.append($ctrlPtContainer)
         this.$ctrlPtContainer = $ctrlPtContainer;
 
-        //<scalebar_line
         var $ctrlPtContainer_scalebar_line = $("<div id='gradientPicker-scalebar_line'; class='gradientPicker-ctrlPts_scalebar_line'></div>");
         this.$el.append($ctrlPtContainer_scalebar_line);
         var toAdd = document.createDocumentFragment();
@@ -208,9 +207,9 @@ Major changes:
             this.opts.controlProcent.push(cp);
             this.opts.controlProcent.sort(ctrlPtComparator);
         }
-    };
+    }
 
-    function allMatches(string, regex, index = 1) {
+    function allMatches(string, regex, index) {
         var matches = [];
         var match = null;
         while (match = regex.exec(string)) {
@@ -280,6 +279,7 @@ Major changes:
         drag: function(e, ui) {
             var left = ui.position.left;
             this.position = (left / (this.$parentEl.width() - this.outerWidth));
+			if(this.position>1){this.position = 1}
             this.listener.updatePreview();
 
         },
@@ -387,12 +387,11 @@ Major changes:
             if (gradSel == null) {
                 var gradSel = new GradientSelection($this, opts);
                 $this.data("gradientPicker-sel", gradSel);
-            } else { // ToDo
+            } else {
                 document.getElementById('gradientPicker-ctrlPts_container').remove();
                 document.getElementById('gradientPicker-scalebar_line').remove();
                 document.getElementById('gradientPicker-scalebar_label').remove();
                 document.getElementById('gradientPicker-ctrlPts_preview').remove();
-
                 var gradSel = $this.data("gradientPicker-sel");
                 var gradSel = new GradientSelection($this, opts);
                 $this.data("gradientPicker-sel", gradSel);

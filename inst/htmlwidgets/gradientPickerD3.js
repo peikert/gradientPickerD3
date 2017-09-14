@@ -1,3 +1,7 @@
+/**
+@author Christian D. Peikert (peikert)
+**/
+
 HTMLWidgets.widget({
 
     name: 'gradientPickerD3',
