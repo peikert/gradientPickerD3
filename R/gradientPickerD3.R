@@ -1,9 +1,9 @@
 #' gradientPickerD3
 #'
 #' Creates a widget for an interactive selection and modification of a color gradient.
-#' gradientPickerD3 allows the addition, removment and replacement of color ticks.
+#' 'gradientPickerD3' allows the addition, removement and replacement of color ticks.
 #' List of numeric values will automatically translate in its corresponding tick position within the numeric range.
-#' App returns a R data.frame containing tick values, colors and the positions in percent (0.0 to 1.0) for each color tick in the gradient.
+#' App returns a data.frame containing tick values, colors and the positions in percent (0.0 to 1.0) for each color tick in the gradient.
 #' The original JS 'jquery-gradient-picker' was implemented by Matt Crinklaw-Vogt.
 #' Widget and JS modifications were done by CD. Peikert.
 #'
